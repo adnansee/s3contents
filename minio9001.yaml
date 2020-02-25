@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc9001
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio9001
+  template:
+    metadata:
+      labels:
+        app: minio9001
+    spec:
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: minio-pvc9001
+      containers:
+      - name: my-minio-fs
+        volumeMounts:
+        - name: data 
+          mountPath: "/data"
+        image: minio/minio:RELEASE.2017-11-22T19-55-46Z
+        args:
+        - server
+        - /data
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: "minioadmin"
+        - name: MINIO_SECRET_KEY
+          value: "minioadmin"
+        ports:
+        - containerPort: 9001
+          hostPort: 9001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio9001
+  labels: 
+    name: minio
+    app: minio
+spec:
+  selector:
+    app: minio9001
+  type: NodePort
+  ports:
+  - name: http
+    port: 9001
+    targetPort: 9001
+    protocol: TCP

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jupyter
+  labels:
+    app: jupyter
+spec: 
+  containers:
+  - image: adnansee/jhybridcontents
+    name: jupyter
+    ports:
+    - containerPort: 8888
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter
+  labels: 
+    name: jupyter
+    app: jupyter
+spec:
+  selector:
+    app: jupyter
+  type: NodePort
+  ports:
+  - name: http
+    port: 8888
+    targetPort: 8888
+    protocol: TCP

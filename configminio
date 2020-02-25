@@ -1,0 +1,109 @@
+
+
+
+from s3contents import S3ContentsManager
+c = get_config()
+
+
+c.NotebookApp.contents_manager_class = S3ContentsManager
+c.S3ContentsManager.access_key_id = "minioadmin"
+c.S3ContentsManager.secret_access_key = "minioadmin"
+c.S3ContentsManager.endpoint_url = "http://10.109.131.250:9000"
+c.S3ContentsManager.bucket = "jupyter2"
+c.S3ContentsManager.prefix = "jupyter"
+
+
+
+from s3contents import S3ContentsManager
+c = get_config()
+
+
+c.NotebookApp.contents_manager_class = S3ContentsManager
+c.S3ContentsManager.access_key_id = "minioadmin"
+c.S3ContentsManager.secret_access_key = "minioadmin"
+c.S3ContentsManager.endpoint_url = "http://172.17.0.4:9000"
+c.S3ContentsManager.bucket = "jupyter2"
+c.S3ContentsManager.prefix = "jupyter"
+
+
+
+from s3contents import S3ContentsManager
+from hybridcontents import HybridContentsManager
+from IPython.html.services.contents.filemanager import FileContentsManager
+
+c = get_config()
+
+c.NotebookApp.contents_manager_class = HybridContentsManager
+
+c.HybridContentsManager.manager_classes = {
+    # Associate the root directory with an S3ContentsManager.
+    # This manager will receive all requests that don"t fall under any of the
+    # other managers.
+    "": S3ContentsManager,
+    # Associate /directory with a FileContentsManager.
+    "local_directory": FileContentsManager,
+}
+
+c.HybridContentsManager.manager_kwargs = {
+    # Args for root S3ContentsManager.
+    "": {
+        "access_key_id": "minioadmin",
+        "secret_access_key": "minioadmin",
+        "endpoint_url": "http://10.109.131.250:9000",
+        "bucket": "jupyter3",
+    },
+    # Args for the FileContentsManager mapped to /directory
+    "local_directory": {
+        "root_dir": "/Users/eddy/Downloads",
+    },
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from s3contents import S3ContentsManager
+from hybridcontents import HybridContentsManager
+from IPython.html.services.contents.filemanager import FileContentsManager
+
+c = get_config()
+
+c.NotebookApp.contents_manager_class = HybridContentsManager
+
+c.HybridContentsManager.manager_classes = {
+    # Associate the root directory with an S3ContentsManager.
+    # This manager will receive all requests that don"t fall under any of the
+    # other managers.
+    "": S3ContentsManager,
+    # Associate /directory with a FileContentsManager.
+    "local_directory": FileContentsManager,
+}
+
+
+c.HybridContentsManager.manager_kwargs = {
+    # Args for root S3ContentsManager.
+    "": {
+        "access_key_id": "minioadmin",
+        "secret_access_key": "minioadmin",
+        "endpoint_url": "http://10.109.131.250:9000",
+        "bucket": "jupyter3",
+    },
+    # Args for the FileContentsManager mapped to /directory
+    "local_directory": {
+        "root_dir": "/",
+    },
+}
